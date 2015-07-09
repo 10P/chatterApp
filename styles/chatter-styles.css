@@ -1,0 +1,185 @@
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: azure;
+    font-family: 'Lato', sans-serif;
+    align-items: center;
+}
+
+#logo-container {
+    display: block;
+    width: 100%;
+    padding: 12px 0px;
+    margin: 0 auto 50px auto;
+    color: bisque;
+    text-align: right;
+}
+
+#chat-box {
+
+    font-family: 'Lato', sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 500px;
+    align-content: center;
+    align-self: center;
+    
+}
+
+.chat-area {
+    width: 500px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    height: 200px;
+    overflow-y: auto;
+    align-items: center;
+}
+
+.msg {
+    
+    width: 400px;
+    margin: 2px 1px 1px 2px;
+    align-content: center;
+    align-self: center;
+}
+
+#msg-area {
+
+    width: 500px;
+    margin-bottom: 5px;
+    align-content: center;
+    align-self: center;
+
+}
+
+#msg-input {
+    
+    width: 500px;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+}
+
+#send-button {
+    
+    font-family: 'Lato', sans-serif;
+    align-self: center;
+    text-align: center;
+    margin: 50px 250px 5px 220px;
+    width: 50px;
+	height: 50px;
+    border-radius: 50%;
+    background-color: cornflowerblue;
+    overflow:hidden;
+    
+    -webkit-transition-property: background-color;
+    -webkit-transition-duration: 0.25s;
+    -moz-transition-property: background-color;
+    -moz-transition-duration: 0.25s;
+    -o-transition-property: background-color;
+    -o-transition-duration: 0.25s;
+    transition-property: background-color;
+    transition-duration: 0.25s;
+}
+
+#send-button:hover {
+    background-color:coral;
+}
+
+#button-text {
+    padding-left: 2px;
+    padding-top:30%;
+    padding-bottom:50%;
+    color: antiquewhite;
+	text-align:center;
+}
+
+<!-- customize the Bootstrap classes -->
+.container {
+
+}
+
+.input-group {
+
+}
+
+.form-control {
+
+}
+
+<!-- media queries for medium-sized screens -->
+@media screen and (max-width : 780px) and (min-device-width : 480px) {
+
+    #chat-box {
+        width: 400px;
+    }
+    
+    .chat-area {
+        width: 400px;
+    }
+
+    .msg {
+        width: 400px;
+    }
+
+    #msg-area {
+        width: 400px;
+    }
+
+    #msg-input {
+        width: 400px;
+    }
+    
+    .container {
+        width: 400px;
+    }
+
+    .input-group {
+        width: 400px;
+    }
+
+    .form-control {
+        width: 400px;
+    }
+}
+
+<!-- media queries for smaller screens -->
+@media screen and (max-width : 470px) {
+    
+    #chat-box {
+        width: 250px;
+    }
+    
+    .chat-area {
+        width: 250px;
+    }
+
+    .msg {
+        width: 250px;
+    }
+
+    #msg-area {
+        width: 250px;
+    }
+
+    #msg-input {
+        width: 250px;
+    }
+    
+    .container {
+        width: 250px;
+    }
+
+    .input-group {
+        width: 250px;
+    }
+
+    .form-control {
+        width: 250px;
+    }
+}

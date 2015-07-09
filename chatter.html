@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="chatterApp">
+<head>
+    <meta charset="UTF-16">
+    <title>Chatter</title>
+    <script type="application/javascript"   src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"
+    ></script>
+    
+    <link href="chatter-styles.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
+    <script>
+        
+        var app = angular.module("chatterApp", []);
+        
+        // our controller logic will handle:
+        // server connections, retrieving messages, sending messages
+        app.controller("chatCtrl", function($scope,$http){
+            
+            // define model here
+            // messages are an array of message objects
+            // where message objects are in JSON format:
+            /*
+                message = {
+                    user: string,
+                    icon: url string,
+                    side: string,
+                    text: string,
+                    time: Date()
+                }
+            
+            */
+            
+            $scope.messages = [];
+            
+            // open connection to server
+            // by creating a new web socket object
+            // we won't have custom protocols this time
+            var serverURL = "ws://";
+            var chatterSocket = new WebSocket(serverURL);
+            
+            
+            // handle getting messages
+            chatterSocket.onmessage = function(event){
+                $scope.messages.push(event.data);
+            };
+            
+            // handle sending messages
+            $scope.submit = function(){
+                
+                var msg = {
+                
+                };
+                
+                // flip side logic
+                
+                chatterSocket.send(JSON.stringify(msg));
+            };
+            
+        });
+    
+    </script>
+    
+</head>
+    
+    <body ng-controller="chatCtrl">
+        <!-- We'll have a top div that spans the full width 
+         containing the logo -->
+        <div id="logo-container"></div>
+        
+        <!-- Below is a Bootstrap container holding our chat box:
+             the chat box contains:
+             - a chat area that is two-way binded (displaying our messages)
+             - a textarea for message input and a button to send     
+          -->
+        
+        <div id="chat-box" class="container">
+            
+            <!-- The message format is as follows:
+                 - the other party is represented by an icon on the left
+                 - the sending party is represented by an icon on the right
+                 - the message text
+                 - the timestamp of the message
+              -->
+            
+            <div id="chat-area" ng-repeat="m in messages">
+                <div class="icon-{{m.side}}">
+                    <img src="{{m.icon}}">
+                </div>
+                <div class="msg">{{m.text}}</div>
+                <div class="msg-date">{{m.time}}</div>
+            </div>
+            
+            <div id="msg-area">
+                <form>
+                    <textarea id="msg-input" ng-model="outMsg"
+                              placeholder="your message here"></textarea>
+                    <button id="send-button" type="submit" 
+                            ng-click="submit()">Send</button>
+                </form>
+            </div>
+        </div>
+        
+        
+        
+        
+    </body>
+</html>

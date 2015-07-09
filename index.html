@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" ng-app="chatterApp">
+  <head>
+    <meta name="viewport" content="width=device-width" />  
+    <title>Chatter</title> 
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>  
+  </head>
+  <body ng-controller="chatCtrl">
+      
+     <!-- We'll have a top div that spans the full width 
+         containing the logo -->
+    <div id="logo-container"></div>  
+
+    
+    <div id="chat-box" class="container">
+        <div class="chat-area">
+            <div class="msg"
+                 ng-repeat="m in messages track by $index">
+                {{m}}
+            </div>
+        </div>
+        
+        <div id="msg-area" class="input-group">
+            <input type="text" class="form-control" 
+                   id="msg-input" ng-model="message"
+                      placeholder="chat away!">
+            
+            <div id="send-button" ng-click="sendMessage()">
+                <p id="button-text">Send!</p>
+            </div>
+        </div>  
+    </div>    
+    
+    
+      
+    <script type="application/javascript"   
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js">
+    </script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="chatter-styles.css" rel="stylesheet">  
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js">    
+    </script>  
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        
+        var app = angular.module("chatterApp", []);
+        
+        // SOCKET FACTORY
+        // define a service which creates socket objects
+        app.factory('socket', ['$rootScope', function ($rootScope) {
+            
+            // Load the socket.io-client exposing an io global
+            // No url specified. The io() call defaults to connecting to the 
+            // host that serves the page  
+            var socket = io.connect();
+            console.log("socket created");
+
+            return {
+                on: function (eventName, callback) {
+                    function wrapper() {
+                        var args = arguments;
+                        $rootScope.$apply(function () {
+                            callback.apply(socket, args);
+                        });
+                    }
+
+                    socket.on(eventName, wrapper);
+
+                    return function () {
+                        socket.removeListener(eventName, wrapper);
+                    };
+                },
+
+                emit: function (eventName, data, callback) {
+                    socket.emit(eventName, data, function () {
+                        var args = arguments;
+                        $rootScope.$apply(function () {
+                            if(callback) {
+                                callback.apply(socket, args);
+                            }
+                        });
+                    });
+                }
+            };
+        }]);
+        
+        // our controller will hold the logic for taking 
+        app.controller('chatCtrl', function($scope, socket){
+            
+            $scope.messages = [];
+            
+            // socket listener events
+            // append the message to the model
+            socket.on('send message', function (message) {
+                //console.log(message);
+                $scope.messages.push(message);
+            });
+            
+            // send the server a chat message event 
+            // which will update the chat model
+            $scope.sendMessage = function () {
+                socket.emit('send message', $scope.message);
+
+                // add the message to our model locally
+                // (for debugging purposes)
+                /*
+                $scope.messages.push({
+                  user: Math.round(Math.random() * 100),
+                  text: $scope.message
+                });
+                */
+                
+                
+
+                // clear message box
+                $scope.message = '';
+            };
+            
+        });     
+    </script>
+  </body>
+</html>
